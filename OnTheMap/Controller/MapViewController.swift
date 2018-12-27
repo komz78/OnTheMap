@@ -26,7 +26,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 //print the error
                 if error != nil {
                     let title = "Erorr performing request"
-                    let message = "There was an error performing your request"
+                     let message = "There was an error: \(error?.localizedDescription ?? "?")"
                     displayAlert.displayAlert(message: message, title: title, vc: self)
                     return
                 }
@@ -34,7 +34,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 //check boolean
                 if !logoutSuccess {
                     let title = "Erorr logging out"
-                    let message = "There was an error performing your request"
+                     let message = "There was an error: \(error?.localizedDescription ?? "?")"
                     displayAlert.displayAlert(message: message, title: title, vc: self)
                 } else {
                     self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
@@ -69,7 +69,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 if error != nil {
                     ActivityIndicator.stopActivityIndicator()
                     let title = "Erorr performing request"
-                    let message = "There was an error performing your request"
+                    let message = "There was an error: \(error?.localizedDescription ?? "?")"
                     displayAlert.displayAlert(message: message, title: title, vc: self)
                     return
                 }
@@ -78,7 +78,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 
                 guard let locationsArray = studentsLocations else {
                     let title = "Erorr loading locations"
-                    let message = "There was an error loading locations"
+                     let message = "There was an error: \(error?.localizedDescription ?? "?")"
                     displayAlert.displayAlert(message: message, title: title, vc: self)
                     return
                 }

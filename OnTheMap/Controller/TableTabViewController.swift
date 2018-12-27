@@ -43,22 +43,17 @@ class TableTabViewController: UIViewController , UITableViewDelegate , UITableVi
                 if error != nil {
                     ActivityIndicator.stopActivityIndicator()
                     let title = "Erorr performing request"
-                    let message = "There was an error performing your request"
+                    let message = "There was an error: \(error?.localizedDescription ?? "?")"
                     displayAlert.displayAlert(message: message, title: title, vc: self)
                     return
                 }
                 
                 guard let locationsArray = studentsLocations else {
                     let title = "Erorr loading locations"
-                    let message = "There was an error loading locations"
+                    let message = "There was an error: \(error?.localizedDescription ?? "?")"
                     displayAlert.displayAlert(message: message, title: title, vc: self)
                     return
                 }
-                
-                //Loop through the array of structs and get locations data from it so they can be displayed on the map
-                //                for locationStruct in locationsArray {
-                //                    self.studentLocations.append(locationStruct)
-                //                }
                 
                 self.studentLocations = locationsArray
                 
@@ -70,7 +65,27 @@ class TableTabViewController: UIViewController , UITableViewDelegate , UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        
+        //as suggested in review this was fixed and found the sulotion  in " https://stackoverflow.com/questions/28532926/if-no-table-view-results-display-no-results-on-screen "
+        if studentLocations.count > 0
+        {
+            tableView.separatorStyle = .singleLine
+            tableView.backgroundView = nil
+        }
+        else
+        {
+            let noDataLabel: UILabel     = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text          = "No data available"
+            noDataLabel.textColor     = UIColor.black
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView  = noDataLabel
+            tableView.separatorStyle  = .none
+            
+            return 0
+        }
         return studentLocations.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

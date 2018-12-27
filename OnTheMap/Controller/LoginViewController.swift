@@ -23,6 +23,8 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginClicked(_ sender: Any) {
         
+        passwordTextField.resignFirstResponder()
+
         guard let username = emailTextField.text else {return}
         guard let password = passwordTextField.text else {return}
         

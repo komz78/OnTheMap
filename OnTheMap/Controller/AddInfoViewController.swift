@@ -24,7 +24,20 @@ class AddInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        websiteTextField.delegate = self
+        locationTextField.delegate = self
+    }
+    
+    // view will appear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
     }
     
     @IBAction func cancelClicked(_ sender: Any) {
@@ -33,14 +46,28 @@ class AddInfoViewController: UIViewController {
     
     
     @IBAction func findLocationClicked(_ sender: Any) {
+        websiteTextField.resignFirstResponder()
+        locationTextField.resignFirstResponder()
         
         guard let websiteLink = websiteTextField.text else {return}
         
-        if websiteLink.range(of:"http://") == nil{
-
+        let prefixOfwebsiteLinkFirst = String(websiteLink.prefix(7)) // http://
+        let prefixOfwebsiteLinkSecond = String(websiteLink.prefix(8)) // https://
+        
+        // i wrote the below conditinion instead of
+        // (prefixOfwebsiteLinkFirst == "http://") || (prefixOfwebsiteLinkSecond == "https://") ONLY!
+        // because if the link is shorter than 7 it wont check the condition, so i had to check for the whole text range also, then check the prefix of website links.
+        // ----- Note to self.
+        
+        let rangeCheckBool = (websiteLink.range(of:"http://") == nil ) || (websiteLink.range(of:"https://") == nil )
+        let prefixCheckBool = (prefixOfwebsiteLinkFirst == "http://") || (prefixOfwebsiteLinkSecond == "https://")
+        
+        if  rangeCheckBool  &&  !prefixCheckBool {
+            
             let title = "Invalid URL"
-            let message = "No http:// in website."
+            let message = "No http:// or https:// in website link."
             displayAlert.displayAlert(message: message, title: title, vc: self)
+            
             
         }else {
             if locationTextField.text != "" && websiteTextField.text != "" {
@@ -68,7 +95,7 @@ class AddInfoViewController: UIViewController {
                     }
                 }
             }else {
-               
+                
                 let title = "Location error."
                 let message = "Enter URL or Location"
                 displayAlert.displayAlert(message: message, title: title, vc: self)
@@ -89,5 +116,48 @@ class AddInfoViewController: UIViewController {
         
     }
     
+    //keyboard
+    
+    //keyboard
+    func subscribeToKeyboardNotifications() {
+        //show
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification , object: nil)
+        //hide
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification , object: nil)
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        //show
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification , object: nil)
+    }
+    
+    @objc func keyboardWillShow(_ notification:Notification) {
+        if websiteTextField.isFirstResponder {
+            view.frame.origin.y = -getKeyboardHeight(notification)
+        }
+        if locationTextField.isFirstResponder {
+            view.frame.origin.y = -getKeyboardHeight(notification)
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification:Notification) {
+        view.frame.origin.y = 0
+    }
+    
+    @objc func getKeyboardHeight(_ notification:Notification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.cgRectValue.height
+    }
+    
+    
+}
+
+extension AddInfoViewController : UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
     
 }

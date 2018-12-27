@@ -174,11 +174,11 @@ class APICalls {
 }
 
 //Result for all locations as an array
-struct Result: Codable {
+class Result: Codable {
     var results: [StudentLocation]?
 }
-//Result for single locations as an array
 
+//Result for single locations
 struct singleResult: Codable {
     var singleResult: StudentLocation?
 }
