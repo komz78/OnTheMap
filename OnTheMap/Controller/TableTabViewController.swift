@@ -68,13 +68,11 @@ class TableTabViewController: UIViewController , UITableViewDelegate , UITableVi
         
         
         //as suggested in review this was fixed and found the sulotion  in " https://stackoverflow.com/questions/28532926/if-no-table-view-results-display-no-results-on-screen "
-        if studentLocations.count > 0
-        {
+        if studentLocations.count > 0 {
             tableView.separatorStyle = .singleLine
             tableView.backgroundView = nil
         }
-        else
-        {
+        else {
             let noDataLabel: UILabel     = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noDataLabel.text          = "No data available"
             noDataLabel.textColor     = UIColor.black

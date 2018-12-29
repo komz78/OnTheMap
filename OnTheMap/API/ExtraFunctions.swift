@@ -39,5 +39,5 @@ struct displayAlert {
         vc.present(alertController, animated: true, completion: nil)
     }
     
+    
 }
-

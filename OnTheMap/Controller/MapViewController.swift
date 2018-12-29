@@ -11,11 +11,11 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
     
-    @IBOutlet weak var MapView: MKMapView!
+    @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        MapView.delegate = self
+        mapView.delegate = self
     }
     
     @IBAction func logoutClicked(_ sender: Any) {
@@ -58,9 +58,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func getLocations () {
         
-        ActivityIndicator.startActivityIndicator(view: self.MapView)
+        ActivityIndicator.startActivityIndicator(view: self.mapView)
         //remove pins before loading data
-        MapView.removeAnnotations(MapView.annotations)
+        mapView.removeAnnotations(mapView.annotations)
         
         APICalls.getAllLocations () {(studentsLocations, error) in
             
@@ -103,7 +103,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     annotations.append (annotation)
                 }
                 ActivityIndicator.stopActivityIndicator()
-                self.MapView.addAnnotations (annotations)
+                self.mapView.addAnnotations (annotations)
             }
         }//end getAllLocations
     

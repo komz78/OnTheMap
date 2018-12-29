@@ -55,13 +55,13 @@ class ConfirmAddInfoViewController: UIViewController , MKMapViewDelegate {
         annotation.title = mapString!
         annotation.subtitle = mediaURL!
         annotation.coordinate = CLLocationCoordinate2DMake(latitude!, longitude!)
-        self.mapView.addAnnotation(annotation)
+        mapView.addAnnotation(annotation)
         
         //zooming to location
         let coredinate:CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude!, longitude!)
         let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
         let region = MKCoordinateRegion(center: coredinate, span: span)
-        self.mapView.setRegion(region, animated: true)
+        mapView.setRegion(region, animated: true)
         
     }
     

@@ -69,7 +69,7 @@ class AddInfoViewController: UIViewController {
             displayAlert.displayAlert(message: message, title: title, vc: self)
             
             
-        }else {
+        } else {
             if locationTextField.text != "" && websiteTextField.text != "" {
                 
                 ActivityIndicator.startActivityIndicator(view: self.view )
@@ -133,10 +133,10 @@ class AddInfoViewController: UIViewController {
     
     @objc func keyboardWillShow(_ notification:Notification) {
         if websiteTextField.isFirstResponder {
-            view.frame.origin.y = -getKeyboardHeight(notification)
+            view.frame.origin.y = -getKeyboardHeight(notification)/2
         }
         if locationTextField.isFirstResponder {
-            view.frame.origin.y = -getKeyboardHeight(notification)
+            view.frame.origin.y = -getKeyboardHeight(notification)/2
         }
     }
     
